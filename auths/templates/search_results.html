@@ -1,0 +1,43 @@
+<div class="card-container">
+    {% for product in results %}
+    {% if product.image %}
+     <div class="card">
+       <img 
+         src="{{ product.image.url }}"
+         alt="{{ product.name }}"
+         width="300"
+         height="400"
+         />
+   
+         <h3>{{ product.name }}</h3>
+         <p>{{ product.description }}</p>
+         <p>{{ product.price}}</p>
+         <p>{% if product.ordered %} Out Of Stock {% else %} In Stock {% endif %}</p>
+         
+         <form method="post"
+         action="{% url 'book_product' product.id %}">
+         {% csrf_token %}
+         {% if product.ordered %}
+         {% comment %} <button></button> {% endcomment %}
+         {% else %}
+         <button>Place Order</button>
+         {% endif %}
+       </form>
+         
+ </div>
+     {% endif %}
+     {% endfor %}
+   </div><br>
+ <br>
+<div
+ style="
+   height: 100px;
+   color: white;
+   object-fit: cover;
+   background-color: grey;
+   display: flex;
+   align-items: center;
+ "
+>
+ footer
+</div>

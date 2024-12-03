@@ -17,6 +17,88 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+      .form{
+        display: flex;
+        flex-direction: column;
+      }
+      label{
+        font-weight:bold;
+      }
+            input[type="text"],
+            input[type="number"],
+            input[type="file"] {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    button:active {
+        background-color: #004494;
+    }
+    .form-container {
+      width: 400px;
+      margin: 50px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .btn{
+    display:flex;
+    gap:1rem;
+  }
+  .btn1{
+    background:red !important;
+  }
+  .orders{
+    display:flex;
+    gap:1rem;
+    justify-content:space-between;
+    padding:2rem;
+  }
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  }
+  .toast.show {
+    opacity: 1;
+    visibility: visible;
+  }
+    </style>
   </head>
   <body>
     <nav class="navbar nav navbar-expand-lg navbar-light bg-dark">
@@ -67,7 +149,7 @@
                 style="color: white"
                 class="nav-link active g"
                 aria-current="page"
-                href="orders"
+                href="/orders"
                 >Orders</a
               >
             </li>
@@ -117,29 +199,127 @@
         </div>
       </div>
     </nav>
-    <h1>Add a Product</h1>
-    <form method="post" enctype="multipart/form-data">
-      <!-- Enable file upload -->
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Add Product</button>
-    </form>
+    
+      
+    <div class="form-container">
+      <h1>Add a Product</h1>
+      <form method="post" 
+      action=""
+        class=''
+        id='boo'
+        onSubmit="showToast()"
+      enctype="multipart/form-data">
+        <!-- Enable file upload -->
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
+    
+   <hr>
+   <div class="orders">
 
-    <h2>Product List</h2>
-    <ul>
-      {% for product in products %}
-      <li>
-        <h3>{{ product.name }}</h3>
-        <p>{{ product.description }}</p>
-        {% if product.image %}
-        <img
-          src="../../product_images/Icon.png"
-          alt="{{ product.name }}"
-          width="150"
-        />
+    <div>
+      <h2>Dashboard</h2>
+    
+
+      <ul>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price (KSH)</th>
+            <th>Actions</th>
+            <th>Status</th>
+          </tr>
+          {% for product in products %}
+          {% if product.user_id == user.id %}
+          <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td class="btn">
+              <form method="post"
+              action="{% url 'edit_product' product.id %}"
+               class=''
+               id='boo'
+               onSubmit="showToast()">
+              {% csrf_token %}
+              <button>Update</button>
+            </form>
+
+              <form method="post"
+              action="{% url 'delete_product' product.id %}">
+              {% csrf_token %}
+              <button class='btn1'>Delete</button>
+            </form>
+            </td>
+            <td><p>{% if  product.ordered%}out of stock {% else %}in stock{% endif %}</p></td>
+
+          </tr>
+          {% endif %}
+  
+          {% endfor %}
+  
+        </table>
+        {% comment %} <li>
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <p>{{ product.price }}</p>
+          {% if product.image %}
+          <img
+            {% comment %} src="../../product_images/Icon.png" {% endcomment %}
+             {% comment %} src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            width="150" {% endcomment %}
+          {% comment %} /> {% endcomment %} 
+          {% comment %} {% endif %} {% endcomment %}
+        {% comment %} </li> {% endcomment %}
+      </ul>
+    </div>
+
+    <div>
+      <h3>Incoming Orders</h3>
+      <ul>
+        {% for order in orders %}
+        {% if order.product.user_id == user.id %}
+
+        <li>
+          <h3>{{ order.product.name }}</h3>
+          <p>{{ order.product.description }}</p>
+          <p>Ordered on: {{ order.ordered_at }}</p>
+          <p>Email: seller@gmail.com:</p>
+          {% if order.product.image %}
+          <img
+            src="{{ order.product.image.url }}"
+            alt="{{ order.product.name }}"
+            width="150"
+          />
+          {% endif %}
+          <form method="post"
+          action="{% url 'delete_order' order.id   %}">
+          {% csrf_token %}
+          <button class='btn1'>Cancel</button>
+  
+        </form>
+        </li>
         {% endif %}
-      </li>
-      {% endfor %}
-    </ul>
+
+        {% endfor %} 
+      </ul> 
+       </div>
+   </div>
+   <div id="toast" class="toast">Product Added Successfully!</div>
+   <script>
+     function showToast() {
+       const toast = document.getElementById("toast");
+       toast.classList.add("show");
+
+       setTimeout(() => {
+         toast.classList.remove("show");
+       }, 7000);
+     }
+     
+   </script>
   </body>
 </html>
 

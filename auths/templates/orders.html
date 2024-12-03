@@ -1,19 +1,239 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <style>
-            
-        </style>
-    </head>
-    <body>
-        <h2>Orders</h2>
-        
-        <script src="" async defer></script>
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Orders</title>
+    <link
+      href="/your-path-to-fontawesome/css/fontawesome.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/your-path-to-fontawesome/css/custom-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+      h1 {
+        color: #007bff;
+      }
+      .card-container{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding-top:6px;
+        padding-left:2px;
+        height: 95%; 
+        gap:2rem;
+        margion:auto;
+      }
+    .card{
+        width: 300px;
+        height: 600px;
+        background-color: #f0f0f0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+        justify-content:center;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      width:100%;
+      
+  }
+  button:hover {
+      background-color: #218838;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+   
+      {% comment %} ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      } {% endcomment %}
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar nav navbar-expand-lg navbar-light bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand h-10" href="/">
+          <img
+            style="height: 70px"
+            src="https://res.cloudinary.com/pitz/image/upload/v1730965661/1-removebg-preview_r6splv.png"
+            alt=""
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul
+            style="margin-left: 150px; color: white"
+            class="navbar-nav me-auto mb-2 mb-lg-0 ml-25 text-white"
+          >
+            <li style="color: white" class="nav-item">
+              <a
+                style="color: white"
+                class="nav-link active text-slate-50 g"
+                aria-current="page"
+                href="/"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                style="color: white"
+                class="nav-link active g"
+                aria-current="page"
+                href="/products"
+                >Products</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                style="color: white"
+                class="nav-link active g"
+                aria-current="page"
+                href="orders"
+                >Orders</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                style="color: white"
+                class="nav-link active g"
+                aria-current="page"
+                href="/contact"
+                >Contact us</a
+              >
+            </li>
+          </ul>
+          <div
+            style="margin-right: 8rem; width: 25rem; height: 2rem"
+            class="mr-4 mb-2"
+          >
+            <div class="form-floating pt-2">
+              <input
+                style="height: 2.8rem"
+                type="text"
+                class="form-control"
+                id="floatingInput"
+                placeholder="search"
+              />
+              <label for="floatingInput">Search...</label>
+            </div>
+          </div>
+          <div class="d-flex gap-4 mt-3">
+            <div class="d-flex flex-column align-items-center">
+              <img
+                style="height: 30px; object-fit: cover"
+                src="data:image/png;base64,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"
+              />
+              <p>{{ user.username }}!</p>
+            </div>
+            <a href="{% url 'logout' %}">
+              <button
+                style="height: 40px; object-fit: cover"
+                type="button"
+                class="btn btn-danger w-full mb-2"
+              >
+                Logout
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+
+
+    <h1>My Orders</h1>
+    
+<div>
+    <div class="card-container">
+      {% for order in orders %}
+      <div class="card">
+      <img
+          src="{{ order.product.image.url }}"
+          alt="{{ order.product.name }}"
+          width="300"
+          height="400"
+        />
+        <h3>{{ order.product.name }}</h3>
+        <p>{{ order.product.description }}</p>
+        <p>Ordered on: {{ order.ordered_at }}</p>
+        <p>Email: buyer@gmail.com</p>
+        {% if order.product.image %}
+        {% endif %}
+        <form method="post"
+        action="{% url 'delete_order' order.id %}"
+        class=''
+        id='boo'
+        onSubmit="showToast()">
+        {% csrf_token %}
+        <button class='btn1'>Cancel Order</button>
+      </form>
+    </div>
+      {% endfor %}
+    </div>
+
+
+
+    <a href="{% url 'products' %}">Back to Products</a>
+
+
+    <div id="toast" class="toast">Order cancelled Successfully!</div>
+
+    <script>
+      function showToast() {
+        const toast = document.getElementById("toast");
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 5000);
+      }
+    </script>
+  </body>
 </html>
+

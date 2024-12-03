@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+       
+        <div class="form-container">
+            <h1>Update your Profile</h1>
+            <form method="post" enctype="multipart/form-data">
+              <!-- Enable file upload -->
+              {% csrf_token %} {{ form.as_p }}
+              <a href="profile.html"><img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="HTML tutorial" style="width:42px;height:42px;"></a>
+            </form>
+          </div>
+        
+        <script src="" async defer></script>
+    </body>
+</html>

@@ -21,6 +21,11 @@
                 width: 600px;
                 text-align: center;
             }
+            form{
+                display: flex;
+                flex-direction: column;
+                text-align:justify;
+            }
             body {
                 font-family: Arial, sans-serif;
                 display: flex;
@@ -31,52 +36,73 @@
                 margin: 0;
                 background-color: #f0f2f5;
             }
-            button {
-                padding: 10px;
-                border: none;
-                border-radius: 5px;
-                background-color: #28a745;
-                color: #fff;
-                font-weight: bold;
-                cursor: pointer;
-                transition: background 0.3s;
-                width:250px;
-                height:50px;
-                font-size:20px;
-            }
+            
             label {
                 font-weight: bold;
                 margin-top: 10px;
                 text-align:justify;
             }
             input[type="text"],
-        input[type="password"] {
-            padding: 10px;
-            margin: 5px 0 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        a {
-            color: black;
-            text-decoration: none;
-            font-size: 0.9em;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        form{
-            text-align:justify;
-        }
+            input[type="email"],
+            input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 16px;
+             }
+             button {
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
         
-            
-            
+            button:hover {
+                background-color: #0056b3;
+            }
+        
+            button:active {
+                background-color: #004494;
+            }
+            .toast {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #28a745;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+              }
+              .toast.show {
+                opacity: 1;
+                visibility: visible;
+              }
         </style>
     </head>
     <body>
         <!-- myapp/templates/register.html -->
          <div class="login-container">
 <h2>Register</h2>
-<form method="post">
+<form method="post"
+        action=""
+        class=''
+        id='boo'
+        onSubmit="showToast()">
+        <label for="text">Your first name</label>
+        <input type="text" name="text" required>
+        <label for="text">Your last name</label>
+        <input type="text" name="text" required>
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Register</button>
@@ -84,7 +110,19 @@
 <a href="{% url 'login' %}">Already have an account? Log in here.</a>
 </div>
 
+<div id="toast" class="toast">Registration Successfull!</div>
+
+   <script>
+     function showToast() {
+       const toast = document.getElementById("toast");
+       toast.classList.add("show");
+
+       setTimeout(() => {
+         toast.classList.remove("show");
+       }, 7000);
+     }
+   </script>
         
-        <script src="" async defer></script>
+        
     </body>
 </html>
