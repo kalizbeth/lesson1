@@ -1,3 +1,4 @@
+from turtle import home
 from django.shortcuts import render
 
 # Create your views here.
@@ -6,8 +7,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegisterForm
 
+from auths.productform import productform
+from .forms import RegisterForm
+from .models import Product
 def register_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -29,11 +32,34 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+
+@login_required
+def product_view(request):
+    if request.method == "POST":
+        form = productform(request.POST ,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('products')
+    else:
+        form =productform()
+    products =Product.objects.all()
+    return render(request, 'products.html',{'form':form,'products':products})    
+        
+
+
 @login_required
 def home_view(request):
-    return render(request, 'home.html')
+    products =Product.objects.all()
+    return render(request, 'home.html',{'products':products})
 
+
+def orders_view(request):
+    return render(request, 'orders.html')
+def contact_view(request):
+    return render(request, 'contact.html')
 def logout_view(request):
     logout(request)
     return redirect('login')
+def ok (request):
+     return render(request, home.html)
 

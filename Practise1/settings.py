@@ -120,7 +120,8 @@ STATIC_URL = 'static/'
 # Redirects after login/logout
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
-
+MEDIA_URL = '/product_images/'
+MEDIA_ROOT = BASE_DIR / 'product_images/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

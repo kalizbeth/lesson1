@@ -1,19 +1,8 @@
-<!-- myapp/templates/home.html -->
-{% comment %}
-<h2>Home</h2>
-<p>Welcome, {{ user.username }}!</p>
-<a href="{% url 'logout' %}">Logout</a> {% endcomment %} {% load static %}
-
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="{%static 'ok.css'%}" />
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <title>Products</title>
     <link
       href="/your-path-to-fontawesome/css/fontawesome.css"
       rel="stylesheet"
@@ -30,9 +19,6 @@
     />
   </head>
   <body>
-    {% comment %}
-    <div class="ok">HELLO WORLD!!!</div>
-    {% endcomment %}
     <nav class="navbar nav navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand h-10" href="/">
@@ -131,6 +117,13 @@
         </div>
       </div>
     </nav>
+    <h1>Add a Product</h1>
+    <form method="post" enctype="multipart/form-data">
+      <!-- Enable file upload -->
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Add Product</button>
+    </form>
+
     <h2>Product List</h2>
     <ul>
       {% for product in products %}
@@ -139,7 +132,7 @@
         <p>{{ product.description }}</p>
         {% if product.image %}
         <img
-          src="{{ product.image.url }}"
+          src="../../product_images/Icon.png"
           alt="{{ product.name }}"
           width="150"
         />
@@ -147,125 +140,7 @@
       </li>
       {% endfor %}
     </ul>
-    {% comment %}
-    <div
-      id="carouselExampleSlidesOnly"
-      class="carousel slide"
-      data-bs-ride="carousel"
-    >
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img
-            style="height: 200px; object-fit: cover"
-            src="https://images.pexels.com/photos/13610249/pexels-photo-13610249.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-        <div class="carousel-item">
-          <img src="..." class="d-block w-100" alt="..." />
-        </div>
-        <div class="carousel-item">
-          <img src="..." class="d-block w-100" alt="..." />
-        </div>
-      </div>
-    </div>
-    {% endcomment %}
-    <div class="row row-cols-1 row-cols-md-3 g-4 p-5">
-      <div class="col">
-        <div class="card">
-          <img
-            style="height: 200px; object-fit: cover"
-            src="https://images.pexels.com/photos/13610249/pexels-photo-13610249.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title">Product title</h5>
-            <p class="card-text">
-              This is a longer card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-            <button type="button" class="btn btn-success w-full">
-              Place Order
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            style="height: 200px; object-fit: cover"
-            src="https://images.pexels.com/photos/13610249/pexels-photo-13610249.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title">Product title</h5>
-            <p class="card-text">
-              This is a longer card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-            <button type="button" class="btn btn-success w-full">
-              Place Order
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            style="height: 200px; object-fit: cover"
-            src="https://images.pexels.com/photos/13610249/pexels-photo-13610249.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title">Product title</h5>
-            <p class="card-text">
-              This is a longer card with supporting text below as a natural
-              lead-in to additional content.
-            </p>
-            <button type="button" class="btn btn-success w-full ">
-              Place Order
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            style="height: 200px; object-fit: cover"
-            src="https://images.pexels.com/photos/13610249/pexels-photo-13610249.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title">Produc title</h5>
-            <p class="card-text">
-              This is a longer card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      style="
-        height: 100px;
-        color: white;
-        object-fit: cover;
-        background-color: grey;
-        display: flex;
-        align-items: center;
-      "
-    >
-      footer
-    </div>
-
-    <script src="" sync defer></script>
   </body>
 </html>
+
+
