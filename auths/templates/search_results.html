@@ -18,7 +18,6 @@
          action="{% url 'book_product' product.id %}">
          {% csrf_token %}
          {% if product.ordered %}
-         {% comment %} <button></button> {% endcomment %}
          {% else %}
          <button>Place Order</button>
          {% endif %}
